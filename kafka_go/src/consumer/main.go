@@ -75,7 +75,7 @@ func main() {
 
 	signal.Notify(g_signal, os.Interrupt, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGHUP)
 	ptTicker := time.NewTicker(5 * time.Second)
-
+	//i := 0
 	for {
 		select {
 		case sig := <-g_signal:
@@ -83,7 +83,13 @@ func main() {
 			return
 		case msg := <-g_ptConsumer.Messages():
 			fmt.Printf("msg := <-g_ptConsumer.Messages {%s}\n", msg)
-			return
+			//i += 1
+			//if i == 3 {
+			//fmt.Printf("delete msg := <-g_ptConsumer.Messages {%s}\n", msg)
+			//g_ptConsumer.CommitUpto(msg)
+			//	return
+			//}
+
 			g_slcPartionMsg = append(g_slcPartionMsg, msg)
 			g_slcMsgBuffer = append(g_slcMsgBuffer, msg)
 			if len(g_slcMsgBuffer) >= LOG_NUM_TO_HBASE {
