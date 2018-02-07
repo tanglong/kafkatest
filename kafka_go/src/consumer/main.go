@@ -75,14 +75,30 @@ func main() {
 
 	signal.Notify(g_signal, os.Interrupt, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGHUP)
 	ptTicker := time.NewTicker(5 * time.Second)
-	//i := 0
+	i := 0
 	for {
 		select {
 		case sig := <-g_signal:
 			fmt.Printf("Signal:%s received\n", sig.String())
 			return
 		case msg := <-g_ptConsumer.Messages():
-			fmt.Printf("msg := <-g_ptConsumer.Messages {%s}\n", msg)
+			//fmt.Printf("recv msg key {%s}\n", msg.Key)
+			//fmt.Printf("recv msg value {%s}\n", msg.Value)
+			//fmt.Printf("recv msg offset {%d}\n", msg.Offset)
+			//fmt.Printf("recv msg partition {%d}\n", msg.Partition)
+
+			fmt.Printf("recv msg partition {%d} offset{%d} msg value{%s}\n", msg.Partition, msg.Offset, msg.Value)
+			if msg.Partition == 66 && msg.Offset == 109178 {
+				//		g_ptConsumer.CommitUpto(msg)
+			}
+
+			i += 1
+			if i == 50 {
+				return
+			}
+
+			//fmt.Printf("msg := <-g_ptConsumer.Messages {%s}\n", msg)
+
 			//i += 1
 			//if i == 3 {
 			//fmt.Printf("delete msg := <-g_ptConsumer.Messages {%s}\n", msg)
